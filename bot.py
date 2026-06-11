@@ -146,42 +146,41 @@ class VerifyView(View):
         super().__init__(timeout=None)
 
     @discord.ui.button(
-        label="✅ Verify",
-        style=discord.ButtonStyle.green
+    label="✅ Verify",
+    style=discord.ButtonStyle.green
+)
+async def verify_button(
+    self,
+    button: discord.ui.Button,
+    interaction: discord.Interaction
+):
+
+    member_role = discord.utils.get(
+        interaction.guild.roles,
+        name="Member"
     )
-    async def verify_button(
-        self,
-        interaction: discord.Interaction,
-        button: discord.ui.Button
-    ):
 
-        member_role = discord.utils.get(
-            interaction.guild.roles,
-            name="Member"
-        )
+    unverified_role = discord.utils.get(
+        interaction.guild.roles,
+        name="Unverified"
+    )
 
-        unverified_role = discord.utils.get(
-            interaction.guild.roles,
-            name="Unverified"
-        )
-
-        if not member_role:
-            await interaction.response.send_message(
-                "❌ لم يتم العثور على رتبة Member",
-                ephemeral=True
-            )
-            return
-
-        if unverified_role:
-            await interaction.user.remove_roles(unverified_role)
-
-        await interaction.user.add_roles(member_role)
-
+    if not member_role:
         await interaction.response.send_message(
-            "✅ تم التوثيق بنجاح",
+            "❌ لم يتم العثور على رتبة Member",
             ephemeral=True
         )
+        return
 
+    if unverified_role:
+        await interaction.user.remove_roles(unverified_role)
+
+    await interaction.user.add_roles(member_role)
+
+    await interaction.response.send_message(
+        "✅ تم التوثيق بنجاح",
+        ephemeral=True
+    )
 
 @bot.command()
 async def verify(ctx):
