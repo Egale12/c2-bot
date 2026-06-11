@@ -21,8 +21,14 @@ async def on_member_join(member):
 
     if channel:
         await channel.send(
-            f"🎉 أهلاً وسهلاً {member.mention} في سيرفر {member.guild.name}!"
-        )
+    f"╭━━━ 🎊 مرحباً بك في C2 🎊 ━━━╮\n"
+    f"┃ 👤 العضو: {member.mention}\n"
+    f"┃ 🌟 نورت السيرفر\n"
+    f"┃ 💬 استمتع بالدردشة\n"
+    f"┃ 🎮 شارك بالفعاليات\n"
+    f"┃ 📜 لا تنس قراءة القوانين\n"
+    f"╰━━━━━━━━━━━━━━━━━━━━━━╯"
+)
 
 #======[loge]=====#
 import discord
