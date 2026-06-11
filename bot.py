@@ -17,18 +17,14 @@ async def on_ready():
 
 @bot.event
 async def on_member_join(member):
-    channel = discord.utils.get(member.guild.text_channels, name="・𝐖𝐄𝐋𝐂𝐎𝐌𝐄")
+    channel = discord.utils.get(member.guild.text_channels, name="welcome")
 
     if channel:
         await channel.send(
-    f"╭━━━ 🎊Welcome to C2 🎊 ━━━╮\n"
-    f"┃ 
-    f"┃ 
-    f"┃ 👤 العضو: {member.mention}\n"
-    f"┃ 
-    f"┃ 
-    f"╰━━━━━━━━━━━━━━━━━━━━━━━━━━━╯"
-)
+            f"- Welcome to C2 .\n\n"
+            f"- {member.mention} .\n\n"
+            f"- Members: {member.guild.member_count} ."
+        )
 
 #======[loge]=====#
 import discord
