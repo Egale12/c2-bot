@@ -151,26 +151,38 @@ class VerifyView(View):
     )
     async def verify_button(
         self,
-        button: discord.ui.Button,
-        interaction: discord.Interaction
+        interaction: discord.Interaction,
+        button: discord.ui.Button
     ):
-        role = discord.utils.get(
+
+        member_role = discord.utils.get(
             interaction.guild.roles,
             name="Member"
         )
 
-        if role:
-            await interaction.user.add_roles(role)
+        unverified_role = discord.utils.get(
+            interaction.guild.roles,
+            name="Unverified"
+        )
 
-            await interaction.response.send_message(
-                "✅ تم التحقق بنجاح",
-                ephemeral=True
-            )
-        else:
+        if not member_role:
             await interaction.response.send_message(
                 "❌ لم يتم العثور على رتبة Member",
                 ephemeral=True
             )
+            return
+
+        if unverified_role:
+            await interaction.user.remove_roles(unverified_role)
+
+        await interaction.user.add_roles(member_role)
+
+        await interaction.response.send_message(
+            "✅ تم التوثيق بنجاح",
+            ephemeral=True
+        )
+
+
 @bot.command()
 async def verify(ctx):
 
@@ -183,6 +195,9 @@ async def verify(ctx):
 
 ✅ اضغط الزر بالأسفل للتوثيق
 
+🎯 عند التوثيق:
+• إزالة رتبة Unverified
+• إعطاء رتبة Member
 
 ━━━━━━━━━━━━━━━━━━
 """,
