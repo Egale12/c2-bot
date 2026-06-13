@@ -141,15 +141,7 @@ async def on_voice_state_update(member, before, after):
         
 
         await log_channel.send(embed=embed)
-           embed = discord.Embed(
-    title="🟢 Stream Started 🎧 🔴 LIVE",
-    description=f"{member.mention} started streaming in the 🔊 {after.channel.name} voice channel",
-    color=0x00ff66
-)
 
-embed.set_footer(text=f"ID: {member.id}")
-embed.timestamp = discord.utils.utcnow()
-
-await log_channel.send(embed=embed)
+        
 
 bot.run(TOKEN)
