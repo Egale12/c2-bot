@@ -146,8 +146,8 @@ async def on_voice_state_update(member, before, after):
 
 
 
-@bot.command()
-async def help(ctx):
+@bot.command(name="c2help")
+async def c2help(ctx):
     embed = discord.Embed(
         title="📖 C2 Help Menu",
         description="قائمة أوامر البوت",
@@ -155,7 +155,7 @@ async def help(ctx):
     )
 
     embed.add_field(
-        name="👋 أوامر الإدارة",
+        name="🛡️ أوامر الإدارة",
         value="""
 !ban - حظر عضو
 !kick - طرد عضو
@@ -188,7 +188,7 @@ async def help(ctx):
         inline=False
     )
 
-    embed.set_footer(text="C2 Bot © 2026")
+    embed.set_footer(text=f"Requested by {ctx.author}")
     await ctx.send(embed=embed)
 
 
