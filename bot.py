@@ -195,10 +195,6 @@ from discord.ext import commands
 
 
 
-@bot.command()
-@commands.has_permissions(manage_messages=True)
-async def clear(ctx, amount: int):
-    await ctx.channel.purge(limit=amount + 1)
 
 
 @bot.command()
