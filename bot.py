@@ -266,5 +266,25 @@ async def ping(ctx):
 async def clear(ctx, amount: int):
     await ctx.channel.purge(limit=amount + 1)
 
+@bot.tree.command(name="c2help", description="عرض أوامر البوت")
+async def c2help(interaction: discord.Interaction):
+    embed = discord.Embed(
+        title="📖 C2 Help Menu",
+        description="قائمة أوامر البوت",
+        color=discord.Color.blue()
+    )
+
+    embed.add_field(
+        name="⚙️ أوامر عامة",
+        value="""
+/ping
+/c2help
+/userinfo
+/serverinfo
+""",
+        inline=False
+    )
+
+    await interaction.response.send_message(embed=embed)
 
 bot.run(TOKEN)
