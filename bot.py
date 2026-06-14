@@ -195,7 +195,7 @@ async def help(ctx):
     )
 
     embed.set_footer(text="C2 Bot © 2026")
-    await ctx.send(embed=embed
+    await ctx.send(embed=embed)
 
 
 bot.run(TOKEN)
