@@ -16,8 +16,6 @@ async def on_ready():
     await bot.tree.sync()
     print(f"Logged in as {bot.user}")
 
-@bot.event
-async def on_member_join(member):
 
 @bot.event
 async def on_member_join(member):
