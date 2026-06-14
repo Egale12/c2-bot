@@ -154,17 +154,6 @@ async def c2help(ctx):
         color=discord.Color.blue()
     )
 
-    embed.add_field(
-        name="🛡️ أوامر الإدارة",
-        value="""
-!ban - حظر عضو
-!kick - طرد عضو
-!clear - حذف الرسائل
-!mute - كتم عضو
-!unmute - فك الكتم
-        """,
-        inline=False
-    )
 
     embed.add_field(
         name="🎵 أوامر الموسيقى",
