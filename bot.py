@@ -193,9 +193,6 @@ async def c2help(ctx):
 
 from discord.ext import commands
 
-@bot.command()
-async def ping(ctx):
-    await ctx.send(f"🏓 Pong! {round(bot.latency * 1000)}ms")
 
 
 @bot.command()
