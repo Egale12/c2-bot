@@ -146,7 +146,7 @@ async def on_voice_state_update(member, before, after):
 
 
 
-@bot.command(name="c2help")
+@bot.command(name="c2")
 async def c2help(ctx):
     embed = discord.Embed(
         title="📖 C2 Help Menu",
@@ -253,6 +253,7 @@ async def serverinfo(ctx):
     embed.add_field(name="الأعضاء", value=guild.member_count, inline=False)
     embed.add_field(name="ID", value=guild.id, inline=False)
 
+    await ctx.send(embed=embed)
 
 
 @bot.command()
