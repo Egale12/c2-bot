@@ -142,7 +142,7 @@ async def on_voice_state_update(member, before, after):
             color=0x00ff66
         )
 
-    
+    #======[c2help]=====#
 
 
 
