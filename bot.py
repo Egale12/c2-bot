@@ -191,5 +191,77 @@ async def c2help(ctx):
     embed.set_footer(text=f"Requested by {ctx.author}")
     await ctx.send(embed=embed)
 
+from discord.ext import commands
+
+@bot.command()
+async def ping(ctx):
+    await ctx.send(f"🏓 Pong! {round(bot.latency * 1000)}ms")
+
+
+@bot.command()
+@commands.has_permissions(manage_messages=True)
+async def clear(ctx, amount: int):
+    await ctx.channel.purge(limit=amount + 1)
+
+
+@bot.command()
+@commands.has_permissions(kick_members=True)
+async def kick(ctx, member: discord.Member, *, reason=None):
+    await member.kick(reason=reason)
+    await ctx.send(f"✅ تم طرد {member.mention}")
+
+
+@bot.command()
+@commands.has_permissions(ban_members=True)
+async def ban(ctx, member: discord.Member, *, reason=None):
+    await member.ban(reason=reason)
+    await ctx.send(f"🔨 تم حظر {member.mention}")
+
+
+@bot.command()
+@commands.has_permissions(ban_members=True)
+async def unban(ctx, user_id: int):
+    user = await bot.fetch_user(user_id)
+    await ctx.guild.unban(user)
+    await ctx.send(f"✅ تم فك الحظر عن {user}")
+
+
+@bot.command()
+async def avatar(ctx, member: discord.Member = None):
+    member = member or ctx.author
+    await ctx.send(member.display_avatar.url)
+
+
+@bot.command()
+async def userinfo(ctx, member: discord.Member = None):
+    member = member or ctx.author
+
+    embed = discord.Embed(
+        title="معلومات العضو",
+        color=discord.Color.blue()
+    )
+
+    embed.add_field(name="الاسم", value=member.name, inline=False)
+    embed.add_field(name="ID", value=member.id, inline=False)
+    embed.add_field(name="تاريخ الدخول", value=member.joined_at.strftime("%Y-%m-%d"), inline=False)
+
+    await ctx.send(embed=embed)
+
+
+@bot.command()
+async def serverinfo(ctx):
+    guild = ctx.guild
+
+    embed = discord.Embed(
+        title="معلومات السيرفر",
+        color=discord.Color.green()
+    )
+
+    embed.add_field(name="اسم السيرفر", value=guild.name, inline=False)
+    embed.add_field(name="الأعضاء", value=guild.member_count, inline=False)
+    embed.add_field(name="ID", value=guild.id, inline=False)
+
+    await ctx.send(embed=embed)
+
 
 bot.run(TOKEN)
