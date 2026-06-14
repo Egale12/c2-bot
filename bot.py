@@ -261,7 +261,17 @@ async def serverinfo(ctx):
     embed.add_field(name="الأعضاء", value=guild.member_count, inline=False)
     embed.add_field(name="ID", value=guild.id, inline=False)
 
-    await ctx.send(embed=embed)
+
+
+@bot.command()
+async def ping(ctx):
+    await ctx.send(f"🏓 Pong! {round(bot.latency * 1000)}ms")
+
+
+@bot.command()
+@commands.has_permissions(manage_messages=True)
+async def clear(ctx, amount: int):
+    await ctx.channel.purge(limit=amount + 1)
 
 
 bot.run(TOKEN)
