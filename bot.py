@@ -146,7 +146,7 @@ async def on_voice_state_update(member, before, after):
 
 
 
-@bot.command(name="c2help")
+@bot.command(name="c2")
 async def c2help(ctx):
     embed = discord.Embed(
         title="📖 C2 Help Menu",
