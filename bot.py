@@ -146,9 +146,6 @@ async def on_voice_state_update(member, before, after):
 
 
 
-embed.set_footer(text=f"ID: {member.id}")
-embed.timestamp = discord.utils.utcnow()
-
 @bot.command()
 async def help(ctx):
     embed = discord.Embed(
