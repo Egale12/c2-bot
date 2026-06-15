@@ -151,88 +151,21 @@ async def on_voice_state_update(member, before, after):
     #======[c2help]=====#
 
 
-
-@bot.command(name="c2")
-async def c2help(ctx):
-    embed = discord.Embed(
-        title="📖 C2 Help Menu",
-        description="قائمة أوامر البوت",
-        color=discord.Color.blue()
+@bot.tree.command(name="ping", description="سرعة البوت")
+async def ping(interaction: discord.Interaction):
+    await interaction.response.send_message(
+        f"🏓 Pong! {round(bot.latency * 1000)}ms"
     )
 
-    embed.add_field(
-        name="🛡️ أوامر الإدارة",
-        value="""
-!ban - حظر عضو
-!kick - طرد عضو
-!clear - حذف الرسائل
-!mute - كتم عضو
-!unmute - فك الكتم
-        """,
-        inline=False
+@bot.tree.command(name="avatar", description="صورة العضو")
+async def avatar(interaction: discord.Interaction):
+    await interaction.response.send_message(
+        interaction.user.display_avatar.url
     )
 
-    embed.add_field(
-        name="🎵 أوامر الموسيقى",
-        value="""
-!play - تشغيل أغنية
-!stop - إيقاف الموسيقى
-!skip - تخطي الأغنية
-!leave - خروج البوت
-        """,
-        inline=False
-    )
-
-    embed.add_field(
-        name="⚙️ أوامر عامة",
-        value="""
-!ping - سرعة البوت
-!avatar - صورة العضو
-!userinfo - معلومات العضو
-!serverinfo - معلومات السيرفر
-        """,
-        inline=False
-    )
-
-    embed.set_footer(text=f"Requested by {ctx.author}")
-    await ctx.send(embed=embed)
-from discord.ext import commands
-
-
-
-
-
-@bot.command()
-@commands.has_permissions(kick_members=True)
-async def kick(ctx, member: discord.Member, *, reason=None):
-    await member.kick(reason=reason)
-    await ctx.send(f"✅ تم طرد {member.mention}")
-
-
-@bot.command()
-@commands.has_permissions(ban_members=True)
-async def ban(ctx, member: discord.Member, *, reason=None):
-    await member.ban(reason=reason)
-    await ctx.send(f"🔨 تم حظر {member.mention}")
-
-
-@bot.command()
-@commands.has_permissions(ban_members=True)
-async def unban(ctx, user_id: int):
-    user = await bot.fetch_user(user_id)
-    await ctx.guild.unban(user)
-    await ctx.send(f"✅ تم فك الحظر عن {user}")
-
-
-@bot.command()
-async def avatar(ctx, member: discord.Member = None):
-    member = member or ctx.author
-    await ctx.send(member.display_avatar.url)
-
-
-@bot.command()
-async def userinfo(ctx, member: discord.Member = None):
-    member = member or ctx.author
+@bot.tree.command(name="userinfo", description="معلومات العضو")
+async def userinfo(interaction: discord.Interaction):
+    member = interaction.user
 
     embed = discord.Embed(
         title="معلومات العضو",
@@ -241,14 +174,12 @@ async def userinfo(ctx, member: discord.Member = None):
 
     embed.add_field(name="الاسم", value=member.name, inline=False)
     embed.add_field(name="ID", value=member.id, inline=False)
-    embed.add_field(name="تاريخ الدخول", value=member.joined_at.strftime("%Y-%m-%d"), inline=False)
 
-    await ctx.send(embed=embed)
+    await interaction.response.send_message(embed=embed)
 
-
-@bot.command()
-async def serverinfo(ctx):
-    guild = ctx.guild
+@bot.tree.command(name="serverinfo", description="معلومات السيرفر")
+async def serverinfo(interaction: discord.Interaction):
+    guild = interaction.guild
 
     embed = discord.Embed(
         title="معلومات السيرفر",
@@ -259,21 +190,11 @@ async def serverinfo(ctx):
     embed.add_field(name="الأعضاء", value=guild.member_count, inline=False)
     embed.add_field(name="ID", value=guild.id, inline=False)
 
-    await ctx.send(embed=embed)
-
-
-@bot.command()
-async def ping(ctx):
-    await ctx.send(f"🏓 Pong! {round(bot.latency * 1000)}ms")
-
-
-@bot.command()
-@commands.has_permissions(manage_messages=True)
-async def clear(ctx, amount: int):
-    await ctx.channel.purge(limit=amount + 1)
+    await interaction.response.send_message(embed=embed)
 
 @bot.tree.command(name="c2help", description="عرض أوامر البوت")
 async def c2help(interaction: discord.Interaction):
+
     embed = discord.Embed(
         title="📖 C2 Help Menu",
         description="قائمة أوامر البوت",
@@ -284,9 +205,10 @@ async def c2help(interaction: discord.Interaction):
         name="⚙️ أوامر عامة",
         value="""
 /ping
-/c2help
+/avatar
 /userinfo
 /serverinfo
+/c2help
 """,
         inline=False
     )
