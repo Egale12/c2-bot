@@ -177,7 +177,10 @@ async def userinfo(interaction: discord.Interaction):
 
     await interaction.response.send_message(embed=embed)
 
-@bot.tree.command(name="serverinfo", description="معلومات السيرفر")
+@bot.tree.command(
+    name="serverinfo",
+    description="معلومات السيرفر"
+)
 async def serverinfo(interaction: discord.Interaction):
     guild = interaction.guild
 
@@ -185,6 +188,26 @@ async def serverinfo(interaction: discord.Interaction):
         title="معلومات السيرفر",
         color=discord.Color.green()
     )
+
+    embed.add_field(
+        name="اسم السيرفر",
+        value=guild.name,
+        inline=False
+    )
+
+    embed.add_field(
+        name="الأعضاء",
+        value=guild.member_count,
+        inline=False
+    )
+
+    embed.add_field(
+        name="ID",
+        value=guild.id,
+        inline=False
+    )
+
+    await interaction.response.send_message(embed=embed)
 
     embed.add_field(name="اسم السيرفر", value=guild.name, inline=False)
     embed.add_field(name="الأعضاء", value=guild.member_count, inline=False)
