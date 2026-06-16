@@ -262,8 +262,8 @@ class VerifyView(discord.ui.View):
         super().__init__(timeout=None)
 
     @discord.ui.button(
-        label="🔰 Verify"
-        style=discord.ButtonStyle.green,
+        label="Verify",
+        style=discord.ButtonStyle.success,
         emoji="✅",
         custom_id="verify_button"
     )
@@ -299,24 +299,10 @@ async def on_ready():
 async def verify(ctx):
 
     embed = discord.Embed(
-    title="🔰 C2 Verification System",
-    description="""
-مرحباً بك في C2 SYSTEM
-
-للوصول إلى جميع أقسام السيرفر يرجى إكمال التوثيق بالضغط على الزر أدناه.
-
-✅ تفعيل العضويتك
-✅ فتح جميع الرومات
-✅ الوصول إلى كافة المميزات
-
-نتمنى لك تجربة ممتعة.
-""",
-    color=0xFFD700
-)
-
-embed.set_footer(
-    text="C2 SYSTEM • Security"
-)
+        title="🔰 Verification",
+        description="اضغط على الزر بالأسفل للتوثيق والدخول إلى السيرفر.",
+        color=0x3498db
+    )
 
     embed.set_footer(text="C2 SYSTEM")
 
