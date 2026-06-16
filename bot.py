@@ -299,10 +299,24 @@ async def on_ready():
 async def verify(ctx):
 
     embed = discord.Embed(
-        title="🔰 Verification",
-        description="اضغط على الزر بالأسفل للتوثيق والدخول إلى السيرفر.",
-        color=0x3498db
-    )
+    title="🔰 C2 Verification System",
+    description="""
+مرحباً بك في C2 SYSTEM
+
+للوصول إلى جميع أقسام السيرفر يرجى إكمال التوثيق بالضغط على الزر أدناه.
+
+✅ تفعيل العضويتك
+✅ فتح جميع الرومات
+✅ الوصول إلى كافة المميزات
+
+نتمنى لك تجربة ممتعة.
+""",
+    color=0xFFD700
+)
+
+embed.set_footer(
+    text="C2 SYSTEM • Security"
+)
 
     embed.set_footer(text="C2 SYSTEM")
 
