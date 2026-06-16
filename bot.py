@@ -241,54 +241,70 @@ async def c2help(interaction: discord.Interaction):
 
     #======[c2help]=====#
 
+import os
 import discord
 from discord.ext import commands
 
-TOKEN = "TOKEN_HERE"
+TOKEN = os.getenv("TOKEN")
+
+MEMBER_ROLE_ID = 1295597136947449999
+UNVERIFIED_ROLE_ID = 1516197855381950609
 
 intents = discord.Intents.default()
-intents.guilds = True
 intents.members = True
+intents.guilds = True
+intents.message_content = True
 
 bot = commands.Bot(command_prefix="!", intents=intents)
-
-ROLE_ID = 1425523376545333343  # حط ايدي الرول هنا
 
 class VerifyView(discord.ui.View):
     def __init__(self):
         super().__init__(timeout=None)
 
-    @discord.ui.button(label="Verify", style=discord.ButtonStyle.success)
-    async def verify(self, interaction: discord.Interaction, button: discord.ui.Button):
-        role = interaction.guild.get_role(ROLE_ID)
+    @discord.ui.button(
+        label="Verify",
+        style=discord.ButtonStyle.success,
+        emoji="✅",
+        custom_id="verify_button"
+    )
+    async def verify_button(self, interaction: discord.Interaction, button: discord.ui.Button):
 
-        if role in interaction.user.roles:
+        member_role = interaction.guild.get_role(MEMBER_ROLE_ID)
+        unverified_role = interaction.guild.get_role(UNVERIFIED_ROLE_ID)
+
+        if member_role in interaction.user.roles:
             await interaction.response.send_message(
-                "✅ انت موثق مسبقاً",
+                "✅ أنت موثق مسبقاً",
                 ephemeral=True
             )
             return
 
-        await interaction.user.add_roles(role)
+        await interaction.user.add_roles(member_role)
+
+        if unverified_role:
+            await interaction.user.remove_roles(unverified_role)
 
         await interaction.response.send_message(
-            "✅ تم التوثيق وإعطاؤك الرول بنجاح",
+            "✅ تم توثيقك بنجاح، أهلاً بك في السيرفر!",
             ephemeral=True
         )
 
 @bot.event
 async def on_ready():
     bot.add_view(VerifyView())
-    print(f"Logged in as {bot.user}")
+    print(f"✅ Logged in as {bot.user}")
 
 @bot.command()
 @commands.has_permissions(administrator=True)
 async def verify(ctx):
+
     embed = discord.Embed(
         title="🔰 Verification",
-        description="اضغط الزر بالأسفل للتوثيق والحصول على الرول.",
+        description="اضغط على الزر بالأسفل للتوثيق والدخول إلى السيرفر.",
         color=0x3498db
     )
+
+    embed.set_footer(text="C2 SYSTEM")
 
     await ctx.send(
         embed=embed,
