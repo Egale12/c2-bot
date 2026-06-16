@@ -239,6 +239,8 @@ async def c2help(interaction: discord.Interaction):
 
     await interaction.response.send_message(embed=embed)
 
+    #======[c2help]=====#
+
 import discord
 from discord.ext import commands
 
@@ -250,7 +252,7 @@ intents.members = True
 
 bot = commands.Bot(command_prefix="!", intents=intents)
 
-ROLE_ID = 123456789012345678  # حط ايدي الرول هنا
+ROLE_ID = 1425523376545333343  # حط ايدي الرول هنا
 
 class VerifyView(discord.ui.View):
     def __init__(self):
