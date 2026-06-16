@@ -262,8 +262,8 @@ class VerifyView(discord.ui.View):
         super().__init__(timeout=None)
 
     @discord.ui.button(
-        label="Verify",
-        style=discord.ButtonStyle.success,
+        label="🔰 Verify"
+        style=discord.ButtonStyle.green,
         emoji="✅",
         custom_id="verify_button"
     )
