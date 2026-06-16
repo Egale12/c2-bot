@@ -239,4 +239,58 @@ async def c2help(interaction: discord.Interaction):
 
     await interaction.response.send_message(embed=embed)
 
+import discord
+from discord.ext import commands
+
+TOKEN = "TOKEN_HERE"
+
+intents = discord.Intents.default()
+intents.guilds = True
+intents.members = True
+
+bot = commands.Bot(command_prefix="!", intents=intents)
+
+ROLE_ID = 123456789012345678  # حط ايدي الرول هنا
+
+class VerifyView(discord.ui.View):
+    def __init__(self):
+        super().__init__(timeout=None)
+
+    @discord.ui.button(label="Verify", style=discord.ButtonStyle.success)
+    async def verify(self, interaction: discord.Interaction, button: discord.ui.Button):
+        role = interaction.guild.get_role(ROLE_ID)
+
+        if role in interaction.user.roles:
+            await interaction.response.send_message(
+                "✅ انت موثق مسبقاً",
+                ephemeral=True
+            )
+            return
+
+        await interaction.user.add_roles(role)
+
+        await interaction.response.send_message(
+            "✅ تم التوثيق وإعطاؤك الرول بنجاح",
+            ephemeral=True
+        )
+
+@bot.event
+async def on_ready():
+    bot.add_view(VerifyView())
+    print(f"Logged in as {bot.user}")
+
+@bot.command()
+@commands.has_permissions(administrator=True)
+async def verify(ctx):
+    embed = discord.Embed(
+        title="🔰 Verification",
+        description="اضغط الزر بالأسفل للتوثيق والحصول على الرول.",
+        color=0x3498db
+    )
+
+    await ctx.send(
+        embed=embed,
+        view=VerifyView()
+    )
+
 bot.run(TOKEN)
