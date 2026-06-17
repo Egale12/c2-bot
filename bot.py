@@ -241,7 +241,7 @@ async def c2help(interaction: discord.Interaction):
 
     #======[c2help]=====#
 
-import os
+
 import discord
 from discord.ext import commands
 
