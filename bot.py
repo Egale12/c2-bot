@@ -242,6 +242,21 @@ async def c2help(interaction: discord.Interaction):
     #======[c2help]=====#
 
 
+import discord
+from discord.ext import commands
+
+TOKEN = os.getenv("TOKEN")
+
+MEMBER_ROLE_ID = 1295597136947449999
+UNVERIFIED_ROLE_ID = 1516197855381950609
+
+intents = discord.Intents.default()
+intents.members = True
+intents.guilds = True
+intents.message_content = True
+
+bot = commands.Bot(command_prefix="!", intents=intents)
+
 class VerifyView(discord.ui.View):
     def __init__(self):
         super().__init__(timeout=None)
@@ -296,4 +311,5 @@ async def verify(ctx):
         view=VerifyView()
     )
 
+bot.run(TOKEN)
 bot.run(TOKEN)
