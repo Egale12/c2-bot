@@ -233,6 +233,7 @@ async def c2help(interaction: discord.Interaction):
 /userinfo
 /serverinfo
 /c2help
+/verify
 """,
         inline=False
     )
@@ -273,10 +274,11 @@ class VerifyView(discord.ui.View):
             "✅ تم توثيقك بنجاح، أهلاً بك في السيرفر!",
             ephemeral=True
         )
-
+        
 @bot.event
 async def on_ready():
     bot.add_view(VerifyView())
+    await bot.tree.sync()
     print(f"✅ Logged in as {bot.user}")
 
 @bot.command()
