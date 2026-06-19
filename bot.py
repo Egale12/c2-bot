@@ -158,6 +158,19 @@ async def ping(interaction: discord.Interaction):
         f"🏓 Pong! {round(bot.latency * 1000)}ms"
     )
 
+@bot.tree.command(name="verify", description="إرسال رسالة التوثيق")
+async def verify(interaction: discord.Interaction):
+    embed = discord.Embed(
+        title="🛡️ Verification",
+        description="اضغط الزر بالأسفل للتوثيق والدخول إلى السيرفر",
+        color=0x3498db
+    )
+
+    await interaction.response.send_message(
+        embed=embed,
+        view=VerifyView()
+    )
+
 @bot.tree.command(name="avatar", description="صورة العضو")
 async def avatar(interaction: discord.Interaction):
     await interaction.response.send_message(
