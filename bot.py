@@ -233,7 +233,6 @@ async def c2help(interaction: discord.Interaction):
 /userinfo
 /serverinfo
 /c2help
-/verify
 """,
         inline=False
     )
