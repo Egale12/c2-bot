@@ -278,11 +278,11 @@ class VerifyView(discord.ui.View):
         super().__init__(timeout=None)
 
     @discord.ui.button(
-        label="Verify",
-        style=discord.ButtonStyle.success,
-        emoji="✅",
-        custom_id="verify_button"
-    )
+    label="Verify",
+    emoji="✅",
+    style=discord.ButtonStyle.success
+)
+    
     async def verify_button(
         self,
         interaction: discord.Interaction,
@@ -322,13 +322,32 @@ async def on_ready():
 )
 async def verify(interaction: discord.Interaction):
 
-    embed = discord.Embed(
-        title="🛡️ Verification",
-        description="اضغط الزر بالأسفل للتوثيق والدخول إلى السيرفر",
-        color=0x3498db
-    )
+   embed = discord.Embed(
+    title="🛡️ C2 SECURITY",
+    description="""
+# مرحباً بك في C2 👋
 
-    embed.set_footer(text="C2 SYSTEM")
+> لضمان أمان السيرفر ومنع الحسابات الوهمية
+
+━━━━━━━━━━━━━━━━━━
+
+✅ الوصول لجميع الرومات
+
+✅ الحصول على رتبة Member
+
+✅ تفعيل جميع صلاحيات العضو
+
+━━━━━━━━━━━━━━━━━━
+
+اضغط الزر بالأسفل لإكمال التوثيق.
+""",
+    color=0x00BFFF
+)
+
+embed.set_image(url="https://i.imgur.com/tVJQK0M.png")
+embed.set_footer(text="C2 SYSTEM • SECURITY")
+
+
 
     await interaction.response.send_message(
         embed=embed,
