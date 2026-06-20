@@ -247,11 +247,6 @@ async def serverinfo(interaction: discord.Interaction):
 
     await interaction.response.send_message(embed=embed)
 
-    embed.add_field(name="اسم السيرفر", value=guild.name, inline=False)
-    embed.add_field(name="الأعضاء", value=guild.member_count, inline=False)
-    embed.add_field(name="ID", value=guild.id, inline=False)
-
-    await interaction.response.send_message(embed=embed)
 
 @bot.tree.command(name="c2help", description="عرض أوامر البوت")
 async def c2help(interaction: discord.Interaction):
