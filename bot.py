@@ -178,7 +178,7 @@ async def on_voice_state_update(member, before, after):
 
         embed.set_thumbnail(url=member.display_avatar.url)
 
-        await log_channel.send(embed=embed
+        await log_channel.send(embed=embed)
 
     #======[c2help]=====#
 
