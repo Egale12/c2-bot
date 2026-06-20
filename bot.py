@@ -311,7 +311,7 @@ class VerifyView(discord.ui.View):
 
 @bot.event
 async def on_ready():
-    bot.add_view(VerifyView())
+    #bot.add_view(VerifyView())
     await bot.tree.sync()
     print(f"Logged in as {bot.user}")
 
