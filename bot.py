@@ -158,13 +158,6 @@ async def ping(interaction: discord.Interaction):
         f"🏓 Pong! {round(bot.latency * 1000)}ms"
     )
 
-@bot.tree.command(name="verify", description="إرسال رسالة التوثيق")
-async def verify(interaction: discord.Interaction):
-    embed = discord.Embed(
-        title="🛡️ Verification",
-        description="اضغط الزر بالأسفل للتوثيق والدخول إلى السيرفر",
-        color=0x3498db
-    )
 
     await interaction.response.send_message(
         embed=embed,
@@ -254,7 +247,6 @@ async def c2help(interaction: discord.Interaction):
 
     #======[c2help]=====#
 
-
 class VerifyView(discord.ui.View):
     def __init__(self):
         super().__init__(timeout=None)
@@ -265,10 +257,13 @@ class VerifyView(discord.ui.View):
         emoji="✅",
         custom_id="verify_button"
     )
-    async def verify_button(self, interaction: discord.Interaction, button: discord.ui.Button):
-
-        member_role = interaction.guild.get_role(MEMBER_ROLE_ID)
-        unverified_role = interaction.guild.get_role(UNVERIFIED_ROLE_ID)
+    async def verify_button(
+        self,
+        interaction: discord.Interaction,
+        button: discord.ui.Button
+    ):
+        member_role = interaction.guild.get_role(1295597136947449999)
+        unverified_role = interaction.guild.get_role(1516197855381950609)
 
         if member_role in interaction.user.roles:
             await interaction.response.send_message(
@@ -283,29 +278,33 @@ class VerifyView(discord.ui.View):
             await interaction.user.remove_roles(unverified_role)
 
         await interaction.response.send_message(
-            "✅ تم توثيقك بنجاح، أهلاً بك في السيرفر!",
+            "✅ تم توثيقك بنجاح",
             ephemeral=True
         )
-        
+
+
 @bot.event
 async def on_ready():
     bot.add_view(VerifyView())
     await bot.tree.sync()
-    print(f"✅ Logged in as {bot.user}")
+    print(f"Logged in as {bot.user}")
 
-@bot.command()
-@commands.has_permissions(administrator=True)
-async def verify(ctx):
+
+@bot.tree.command(
+    name="verify",
+    description="إرسال رسالة التوثيق"
+)
+async def verify(interaction: discord.Interaction):
 
     embed = discord.Embed(
-        title="🔰 Verification",
-        description="اضغط على الزر بالأسفل للتوثيق والدخول إلى السيرفر.",
+        title="🛡️ Verification",
+        description="اضغط الزر بالأسفل للتوثيق والدخول إلى السيرفر",
         color=0x3498db
     )
 
     embed.set_footer(text="C2 SYSTEM")
 
-    await ctx.send(
+    await interaction.response.send_message(
         embed=embed,
         view=VerifyView()
     )
