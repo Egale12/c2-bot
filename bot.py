@@ -36,36 +36,30 @@ voice_times = {}
 
 @bot.event
 async def on_voice_state_update(member, before, after):
-
-    log_channel = discord.utils.get(member.guild.text_channels, name="𝗖𝟮-𝗦𝗬𝗦𝗧𝗘𝗠")
+    log_channel = discord.utils.get(
+        member.guild.text_channels,
+        name="c2-system"
+    )
 
     if not log_channel:
         return
 
     # دخول روم
     if before.channel is None and after.channel is not None:
-
         voice_times[member.id] = datetime.now()
 
         embed = discord.Embed(
-            title="🎤 دخول روم صوتي",
-            color=0x00ff66
+            title="🟢 Joined Channel 🎙️",
+            description=f"{member.mention} joined the voice channel",
+            color=0x00ff88
         )
 
         embed.set_thumbnail(url=member.display_avatar.url)
-
         embed.add_field(
-            name="👤 العضو",
-            value=member.mention,
-            inline=False
-        )
-
-        embed.add_field(
-            name="🔊 الروم",
+            name="🔊 Channel",
             value=after.channel.mention,
             inline=False
         )
-
         embed.set_footer(text=f"ID: {member.id}")
 
         await log_channel.send(embed=embed)
@@ -73,36 +67,33 @@ async def on_voice_state_update(member, before, after):
     # خروج روم
     elif before.channel is not None and after.channel is None:
 
-        join_time = voice_times.get(member.id)
+        duration = "Unknown"
 
-        duration = "غير معروف"
+        if member.id in voice_times:
+            seconds = int(
+                (datetime.now() - voice_times[member.id]).total_seconds()
+            )
 
-        if join_time:
-            seconds = int((datetime.now() - join_time).total_seconds())
-            minutes = seconds // 60
-            duration = f"{minutes} دقيقة"
+            hours = seconds // 3600
+            minutes = (seconds % 3600) // 60
+
+            duration = f"{hours}h {minutes}m"
 
         embed = discord.Embed(
-            title="🔴 خروج من روم صوتي",
-            color=0xff0000
+            title="🔴 Left Channel 🎙️",
+            description=f"{member.mention} left the voice channel",
+            color=0xff4d4d
         )
 
         embed.set_thumbnail(url=member.display_avatar.url)
-
         embed.add_field(
-            name="👤 العضو",
-            value=member.mention,
-            inline=False
-        )
-
-        embed.add_field(
-            name="🔊 الروم",
+            name="🔊 Channel",
             value=before.channel.name,
             inline=False
         )
 
         embed.add_field(
-            name="⏱️ مدة الجلسة",
+            name="⏱️ Time Spent",
             value=duration,
             inline=False
         )
@@ -111,31 +102,25 @@ async def on_voice_state_update(member, before, after):
 
         await log_channel.send(embed=embed)
 
-    # انتقال بين الرومات
+    # نقل روم
     elif before.channel != after.channel:
 
         embed = discord.Embed(
-            title="🔄 انتقال بين الرومات",
+            title="🟡 Moved Channel 🔄",
             color=0xffcc00
         )
 
         embed.set_thumbnail(url=member.display_avatar.url)
 
         embed.add_field(
-            name="👤 العضو",
-            value=member.mention,
-            inline=False
-        )
-
-        embed.add_field(
-            name="📤 من",
-            value=before.channel.name,
+            name="📤 From",
+            value=before.channel.mention,
             inline=True
         )
 
         embed.add_field(
-            name="📥 إلى",
-            value=after.channel.name,
+            name="📥 To",
+            value=after.channel.mention,
             inline=True
         )
 
@@ -143,11 +128,57 @@ async def on_voice_state_update(member, before, after):
 
         await log_channel.send(embed=embed)
 
+    # بدأ ستريم
+    if not before.self_stream and after.self_stream:
+
         embed = discord.Embed(
-            title="🟢 Stream Started",
-            description="...",
-            color=0x00ff66
+            title="🟣 Stream Started 📺",
+            description=f"{member.mention} started streaming",
+            color=0x9b59b6
         )
+
+        embed.set_thumbnail(url=member.display_avatar.url)
+
+        await log_channel.send(embed=embed)
+
+    # وقف ستريم
+    elif before.self_stream and not after.self_stream:
+
+        embed = discord.Embed(
+            title="🔴 Stream Ended 📺",
+            description=f"{member.mention} stopped streaming",
+            color=0xe74c3c
+        )
+
+        embed.set_thumbnail(url=member.display_avatar.url)
+
+        await log_channel.send(embed=embed)
+
+    # فتح كام
+    if not before.self_video and after.self_video:
+
+        embed = discord.Embed(
+            title="📷 Camera Enabled",
+            description=f"{member.mention} turned on camera",
+            color=0x3498db
+        )
+
+        embed.set_thumbnail(url=member.display_avatar.url)
+
+        await log_channel.send(embed=embed)
+
+    # سكر كام
+    elif before.self_video and not after.self_video:
+
+        embed = discord.Embed(
+            title="📷 Camera Disabled",
+            description=f"{member.mention} turned off camera",
+            color=0x95a5a6
+        )
+
+        embed.set_thumbnail(url=member.display_avatar.url)
+
+        await log_channel.send(embed=embed
 
     #======[c2help]=====#
 
