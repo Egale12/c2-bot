@@ -38,7 +38,7 @@ voice_times = {}
 async def on_voice_state_update(member, before, after):
     log_channel = discord.utils.get(
         member.guild.text_channels,
-        name="c2-system"
+        name="𝗖𝟮-𝗦𝗬𝗦𝗧𝗘𝗠"
     )
 
     if not log_channel:
