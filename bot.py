@@ -344,6 +344,9 @@ async def verify(interaction: discord.Interaction):
         color=0x00BFFF
     )
 
+    # حط رابط صورة اللوقو هنا
+    embed.set_image(url="https://imgur.com/a/DXlNawG")
+
     embed.set_footer(text="C2 SYSTEM • SECURITY")
 
     await interaction.response.send_message(
