@@ -322,14 +322,14 @@ async def on_ready():
 )
 async def verify(interaction: discord.Interaction):
 
-   embed = discord.Embed(
-    title="🛡️ C2 SECURITY",
-    description="""
-# مرحباً بك في C2 👋
+    embed = discord.Embed(
+        title="🛡️ C2 SECURITY",
+        description="""
+👋 مرحباً بك في C2
 
-> لضمان أمان السيرفر ومنع الحسابات الوهمية
+لضمان أمان السيرفر ومنع الحسابات الوهمية
 
-━━━━━━━━━━━━━━━━━━
+━━━━━━━━━━━━━━
 
 ✅ الوصول لجميع الرومات
 
@@ -337,20 +337,19 @@ async def verify(interaction: discord.Interaction):
 
 ✅ تفعيل جميع صلاحيات العضو
 
-━━━━━━━━━━━━━━━━━━
+━━━━━━━━━━━━━━
 
-اضغط الزر بالأسفل لإكمال التوثيق.
+اضغط الزر بالأسفل لإكمال التوثيق
 """,
-    color=0x00BFFF
-)
+        color=0x00BFFF
+    )
 
-embed.set_image(url="https://i.imgur.com/tVJQK0M.png")
-embed.set_footer(text="C2 SYSTEM • SECURITY")
+    embed.set_footer(text="C2 SYSTEM • SECURITY")
 
-await interaction.response.send_message(
-    embed=embed,
-    view=VerifyView()
-)
+    await interaction.response.send_message(
+        embed=embed,
+        view=VerifyView()
+    )
 
 
 bot.run(TOKEN)
