@@ -347,12 +347,10 @@ async def verify(interaction: discord.Interaction):
 embed.set_image(url="https://i.imgur.com/tVJQK0M.png")
 embed.set_footer(text="C2 SYSTEM • SECURITY")
 
-
-
-    await interaction.response.send_message(
-        embed=embed,
-        view=VerifyView()
-    )
+await interaction.response.send_message(
+    embed=embed,
+    view=VerifyView()
+)
 
 
 bot.run(TOKEN)
