@@ -377,10 +377,13 @@ class LoLNews:
         )
 
         embed.set_footer(
-            text="C2 SYSTEM • GAMING"
-        )
+    text="C2 SYSTEM • GAMING"
+)
 
-        await channel.send(embed=embed)
+print("Sending LoL News...")
+await channel.send(embed=embed)
+
+       
 
     @news_loop.before_loop
     async def before_news_loop(self):
