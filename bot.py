@@ -357,31 +357,25 @@ class LoLNews:
         self.channel_id = 1295599549808902155
         self.news_loop.start()
 
-    @tasks.loop(minutes=1)
-    async def news_loop(self):
-        channel = self.bot.get_channel(self.channel_id)
+   @tasks.loop(minutes=1)
+async def news_loop(self):
+    channel = self.bot.get_channel(self.channel_id)
 
-        if not channel:
-            return
+    if not channel:
+        return
 
-        embed = discord.Embed(
-            title="🎮 League of Legends",
-            description="آخر أخبار وتحديثات League of Legends",
-            color=0x00BFFF
-        )
+    embed = discord.Embed(
+        title="🎮 League of Legends",
+        description="آخر أخبار وتحديثات League of Legends",
+        color=0x00BFFF
+    )
 
-        embed.add_field(
-            name="🔥 Riot Games",
-            value="https://www.leagueoflegends.com/en-us/news/",
-            inline=False
-        )
+    embed.set_footer(
+        text="C2 SYSTEM • GAMING"
+    )
 
-        embed.set_footer(
-    text="C2 SYSTEM • GAMING"
-)
-
-print("Sending LoL News...")
-await channel.send(embed=embed)
+    print("Sending LoL News...")
+    await channel.send(embed=embed)
 
     
 bot.run(TOKEN)
