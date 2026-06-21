@@ -18,6 +18,8 @@ async def on_ready():
     synced = await bot.tree.sync()
     print(f"Synced {len(synced)} commands")
 
+    print("Creating LoLNews")
+
     global lol_news_system
 
     if 'lol_news_system' not in globals():
