@@ -18,8 +18,6 @@ async def on_ready():
     synced = await bot.tree.sync()
     print(f"Synced {len(synced)} commands")
 
-    print("Creating LoLNews")
-
     global lol_news_system
 
     if 'lol_news_system' not in globals():
@@ -357,10 +355,11 @@ from discord.ext import tasks
 
 class LoLNews:
     def __init__(self, bot):
+        print("LOLNEWS CREATED")
+
         self.bot = bot
         self.channel_id = 1295599549808902155
         self.news_loop.start()
-        print("LoLNews Started")
 
     @tasks.loop(minutes=1)
     async def news_loop(self):
