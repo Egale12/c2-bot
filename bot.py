@@ -349,7 +349,7 @@ async def verify(interaction: discord.Interaction):
         view=VerifyView()
     )
 
-rom discord.ext import tasks
+from discord.ext import tasks
 
 class LoLNews:
     def __init__(self, bot):
