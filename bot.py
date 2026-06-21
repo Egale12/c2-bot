@@ -345,7 +345,7 @@ async def verify(interaction: discord.Interaction):
     )
 
     # حط رابط صورة اللوقو هنا
-    embed.set_image(url="https://imgur.com/a/DXlNawG")
+    embed.set_image(url="https://i.postimg.cc/SxFGjg0z/IMG-0880.png")
 
     embed.set_footer(text="C2 SYSTEM • SECURITY")
 
