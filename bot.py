@@ -15,8 +15,8 @@ bot = commands.Bot(command_prefix="/", intents=intents)
 async def on_ready():
     synced = await bot.tree.sync()
     print(f"Synced {len(synced)} commands")
-    print(f"Logged in as {bot.user}")
-        global lol_news_system
+
+    global lol_news_system
 
     if 'lol_news_system' not in globals():
         lol_news_system = LoLNews(bot)
