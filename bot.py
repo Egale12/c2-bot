@@ -359,10 +359,12 @@ class LoLNews:
 
     @tasks.loop(minutes=1)
     async def news_loop(self):
-        channel = self.bot.get_channel(self.channel_id)
+    channel = self.bot.get_channel(self.channel_id)
 
-        if not channel:
-            return
+    print("NEWS LOOP WORKING")
+
+    if not channel:
+        return
 
         embed = discord.Embed(
             title="🎮 League of Legends",
