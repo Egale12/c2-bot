@@ -383,11 +383,5 @@ class LoLNews:
 print("Sending LoL News...")
 await channel.send(embed=embed)
 
-       
-
-    @news_loop.before_loop
-    async def before_news_loop(self):
-        await self.bot.wait_until_ready()
-
-
+    
 bot.run(TOKEN)
