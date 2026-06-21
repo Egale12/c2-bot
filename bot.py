@@ -11,7 +11,7 @@ intents.members = True
 
 bot = commands.Bot(command_prefix="/", intents=intents)
 
-@bot.eventt
+@bot.event
 async def on_ready():
     print("ON_READY WORKING")
 
