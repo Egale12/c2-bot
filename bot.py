@@ -349,32 +349,38 @@ async def verify(interaction: discord.Interaction):
         view=VerifyView()
     )
 
-from discord.ext import tasks
+rom discord.ext import tasks
 
 class LoLNews:
     def __init__(self, bot):
         self.bot = bot
         self.channel_id = 1295599549808902155
         self.news_loop.start()
+        print("LoLNews Started")
 
     @tasks.loop(minutes=1)
-async def news_loop(self):
-    channel = self.bot.get_channel(self.channel_id)
+    async def news_loop(self):
+        print("NEWS LOOP WORKING")
 
-    print("NEWS LOOP WORKING")
+        channel = self.bot.get_channel(self.channel_id)
 
-    if not channel:
-        return
+        if channel is None:
+            print("Channel not found")
+            return
 
-    embed = discord.Embed(
-        title="🎮 League of Legends",
-        description="آخر أخبار وتحديثات League of Legends",
-        color=0x00BFFF
-    )
+        embed = discord.Embed(
+            title="🎮 League of Legends",
+            description="آخر أخبار وتحديثات League of Legends",
+            color=0x00BFFF
+        )
 
-    embed.set_footer(text="C2 SYSTEM • GAMING")
+        embed.set_footer(text="C2 SYSTEM • GAMING")
 
-    await channel.send(embed=embed)
+        await channel.send(embed=embed)
+
+    @news_loop.before_loop
+    async def before_news_loop(self):
+        await self.bot.wait_until_ready()
 
     
 bot.run(TOKEN)
