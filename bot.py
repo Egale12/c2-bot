@@ -325,20 +325,9 @@ async def verify(interaction: discord.Interaction):
     embed = discord.Embed(
         title="🛡️ C2 SECURITY",
         description="""
-👋 مرحباً بك في C2
+👋 Welcome to 🛡️ C2 SECURITY
 
 لضمان أمان السيرفر ومنع الحسابات الوهمية
-
-━━━━━━━━━━━━━━
-
-✅ الوصول لجميع الرومات
-
-✅ الحصول على رتبة Member
-
-✅ تفعيل جميع صلاحيات العضو
-
-━━━━━━━━━━━━━━
-
 اضغط الزر بالأسفل لإكمال التوثيق
 """,
         color=0x00BFFF
