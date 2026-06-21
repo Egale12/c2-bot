@@ -357,7 +357,7 @@ class LoLNews:
         self.channel_id = 1295599549808902155
         self.news_loop.start()
 
-    @tasks.loop(hours=1)
+    @tasks.loop(minutes=1)
     async def news_loop(self):
         channel = self.bot.get_channel(self.channel_id)
 
