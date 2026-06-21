@@ -16,6 +16,12 @@ async def on_ready():
     synced = await bot.tree.sync()
     print(f"Synced {len(synced)} commands")
     print(f"Logged in as {bot.user}")
+        global lol_news_system
+
+    if 'lol_news_system' not in globals():
+        lol_news_system = LoLNews(bot)
+
+    print(f"Logged in as {bot.user}")
 
 
 @bot.event
@@ -342,6 +348,43 @@ async def verify(interaction: discord.Interaction):
         embed=embed,
         view=VerifyView()
     )
+
+from discord.ext import tasks
+
+class LoLNews:
+    def __init__(self, bot):
+        self.bot = bot
+        self.channel_id = 1295599549808902155
+        self.news_loop.start()
+
+    @tasks.loop(hours=1)
+    async def news_loop(self):
+        channel = self.bot.get_channel(self.channel_id)
+
+        if not channel:
+            return
+
+        embed = discord.Embed(
+            title="🎮 League of Legends",
+            description="آخر أخبار وتحديثات League of Legends",
+            color=0x00BFFF
+        )
+
+        embed.add_field(
+            name="🔥 Riot Games",
+            value="https://www.leagueoflegends.com/en-us/news/",
+            inline=False
+        )
+
+        embed.set_footer(
+            text="C2 SYSTEM • GAMING"
+        )
+
+        await channel.send(embed=embed)
+
+    @news_loop.before_loop
+    async def before_news_loop(self):
+        await self.bot.wait_until_ready()
 
 
 bot.run(TOKEN)
