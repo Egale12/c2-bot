@@ -15,8 +15,6 @@ bot = commands.Bot(command_prefix="/", intents=intents)
 async def on_ready():
     print("ON_READY WORKING")
 
-    bot.add_view(VerifyView())
-
     synced = await bot.tree.sync()
     print(f"Synced {len(synced)} commands")
 
