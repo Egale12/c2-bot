@@ -350,15 +350,13 @@ import aiohttp
 class LoLNews:
     def __init__(self, bot):
         self.bot = bot
-        self.channel_id = 1295599549808902155  # روم GAMING
+        self.channel_id = 1295599549808902155
         self.last_title = None
         self.news_loop.start()
 
-   @tasks.loop(minutes=1)
-async def news_loop(self):
-    print("LOL NEWS WORKING")
-
-    channel = self.bot.get_channel(self.channel_id)
+    @tasks.loop(minutes=1)
+    async def news_loop(self):
+        channel = self.bot.get_channel(self.channel_id)
 
         if not channel:
             print("CHANNEL NOT FOUND")
