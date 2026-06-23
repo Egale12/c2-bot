@@ -13,18 +13,17 @@ bot = commands.Bot(command_prefix="/", intents=intents)
 
 @bot.event
 async def on_ready():
-    print("TEST 123")
     print("ON_READY WORKING")
-
     synced = await bot.tree.sync()
     print(f"Synced {len(synced)} commands")
+    print(f"Logged in as {bot.user}"
 
-    global lol_news_system
+    #global lol_news_system
 
-    if 'lol_news_system' not in globals():
-        lol_news_system = LoLNews(bot)
+    #if 'lol_news_system' not in globals():
+        #lol_news_system = LoLNews(bot)
 
-    print(f"Logged in as {bot.user}")
+    #print(f"Logged in as {bot.user}")
 
 
 @bot.event
