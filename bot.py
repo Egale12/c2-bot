@@ -13,6 +13,7 @@ bot = commands.Bot(command_prefix="/", intents=intents)
 
 @bot.event
 async def on_ready():
+    print("TEST 123")
     print("ON_READY WORKING")
 
     synced = await bot.tree.sync()
