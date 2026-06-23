@@ -349,6 +349,7 @@ import aiohttp
 
 class LoLNews:
     def __init__(self, bot):
+        print("LOLNEWS CREATED")
         self.bot = bot
         self.channel_id = 1295599549808902155
         self.last_title = None
