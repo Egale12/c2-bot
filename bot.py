@@ -354,7 +354,7 @@ class LoLNews:
         self.last_title = None
         self.news_loop.start()
 
-    @tasks.loop(minutes=30)
+    @tasks.loop(minutes=1)
     async def news_loop(self):
         channel = self.bot.get_channel(self.channel_id)
 
