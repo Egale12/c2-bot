@@ -348,35 +348,27 @@ from discord.ext import tasks
 
 class LoLNews:
     def __init__(self, bot):
-        print("LOLNEWS CREATED")
-
         self.bot = bot
-        self.channel_id = 1295599549808902155
+        self.channel_id = 1295599549808902155  # حط آيدي روم GAMING
         self.news_loop.start()
 
     @tasks.loop(minutes=1)
     async def news_loop(self):
-        print("NEWS LOOP WORKING")
+        print("LOL NEWS WORKING")
 
         channel = self.bot.get_channel(self.channel_id)
 
         if channel is None:
-            print("Channel not found")
+            print("CHANNEL NOT FOUND")
             return
 
         embed = discord.Embed(
             title="🎮 League of Legends",
-            description="آخر أخبار وتحديثات League of Legends",
+            description="تم إرسال رسالة اختبار من نظام LoL News",
             color=0x00BFFF
         )
 
-        embed.set_footer(text="C2 SYSTEM • GAMING")
-
-        await channel.send("TEST MESSAGE")
-
-    @news_loop.before_loop
-    async def before_news_loop(self):
-        await self.bot.wait_until_ready()
-
+        await channel.send(embed=embed)
+        print("NEWS SENT")
     
 bot.run(TOKEN)
