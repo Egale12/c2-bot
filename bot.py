@@ -319,13 +319,6 @@ class VerifyView(discord.ui.View):
         )
 
 
-@bot.event
-async def on_ready():
-    #bot.add_view(VerifyView())
-    await bot.tree.sync()
-    print(f"Logged in as {bot.user}")
-
-
 @bot.tree.command(
     name="verify",
     description="إرسال رسالة التوثيق"
