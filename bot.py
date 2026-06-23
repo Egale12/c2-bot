@@ -18,10 +18,10 @@ async def on_ready():
     synced = await bot.tree.sync()
     print(f"Synced {len(synced)} commands")
 
-    global lol_news_system
+    #global lol_news_system
 
-    if 'lol_news_system' not in globals():
-        lol_news_system = LoLNews(bot)
+    #if 'lol_news_system' not in globals():
+        #lol_news_system = LoLNews(bot)
 
     print(f"Logged in as {bot.user}")
 
@@ -354,9 +354,11 @@ class LoLNews:
         self.last_title = None
         self.news_loop.start()
 
-    @tasks.loop(minutes=1)
-    async def news_loop(self):
-        channel = self.bot.get_channel(self.channel_id)
+   @tasks.loop(minutes=1)
+async def news_loop(self):
+    print("LOL NEWS WORKING")
+
+    channel = self.bot.get_channel(self.channel_id)
 
         if not channel:
             print("CHANNEL NOT FOUND")
