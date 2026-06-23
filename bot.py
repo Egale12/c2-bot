@@ -190,6 +190,122 @@ async def on_voice_state_update(member, before, after):
         await log_channel.send(embed=embed)
 
     #======[c2help]=====#
+from discord import app_commands
+import discord
+import datetime
+
+# /clear
+@bot.tree.command(name="clear", description="حذف الرسائل")
+async def clear(interaction: discord.Interaction, amount: int):
+    if not interaction.user.guild_permissions.manage_messages:
+        return await interaction.response.send_message("❌ لا تملك الصلاحية", ephemeral=True)
+
+    await interaction.response.defer(ephemeral=True)
+    await interaction.channel.purge(limit=amount)
+    await interaction.followup.send(f"✅ تم حذف {amount} رسالة")
+
+# /kick
+@bot.tree.command(name="kick", description="طرد عضو")
+async def kick(interaction: discord.Interaction, member: discord.Member, reason: str = "No Reason"):
+    if not interaction.user.guild_permissions.kick_members:
+        return await interaction.response.send_message("❌ لا تملك الصلاحية", ephemeral=True)
+
+    await member.kick(reason=reason)
+    await interaction.response.send_message(f"👢 تم طرد {member.mention}")
+
+# /ban
+@bot.tree.command(name="ban", description="حظر عضو")
+async def ban(interaction: discord.Interaction, member: discord.Member, reason: str = "No Reason"):
+    if not interaction.user.guild_permissions.ban_members:
+        return await interaction.response.send_message("❌ لا تملك الصلاحية", ephemeral=True)
+
+    await member.ban(reason=reason)
+    await interaction.response.send_message(f"🔨 تم حظر {member.mention}")
+
+# /unban
+@bot.tree.command(name="unban", description="فك حظر عضو")
+async def unban(interaction: discord.Interaction, user_id: str):
+    if not interaction.user.guild_permissions.ban_members:
+        return await interaction.response.send_message("❌ لا تملك الصلاحية", ephemeral=True)
+
+    user = await bot.fetch_user(int(user_id))
+    await interaction.guild.unban(user)
+    await interaction.response.send_message(f"✅ تم فك حظر {user}")
+
+# /mute
+@bot.tree.command(name="mute", description="كتم عضو")
+async def mute(interaction: discord.Interaction, member: discord.Member, minutes: int):
+    if not interaction.user.guild_permissions.moderate_members:
+        return await interaction.response.send_message("❌ لا تملك الصلاحية", ephemeral=True)
+
+    until = discord.utils.utcnow() + datetime.timedelta(minutes=minutes)
+    await member.timeout(until)
+
+    await interaction.response.send_message(
+        f"🔇 تم كتم {member.mention} لمدة {minutes} دقيقة"
+    )
+
+# /unmute
+@bot.tree.command(name="unmute", description="فك كتم عضو")
+async def unmute(interaction: discord.Interaction, member: discord.Member):
+    if not interaction.user.guild_permissions.moderate_members:
+        return await interaction.response.send_message("❌ لا تملك الصلاحية", ephemeral=True)
+
+    await member.timeout(None)
+    await interaction.response.send_message(f"🔊 تم فك كتم {member.mention}")
+
+# /lock
+@bot.tree.command(name="lock", description="قفل الروم")
+async def lock(interaction: discord.Interaction):
+    if not interaction.user.guild_permissions.manage_channels:
+        return await interaction.response.send_message("❌ لا تملك الصلاحية", ephemeral=True)
+
+    await interaction.channel.set_permissions(
+        interaction.guild.default_role,
+        send_messages=False
+    )
+
+    await interaction.response.send_message("🔒 تم قفل الروم")
+
+# /unlock
+@bot.tree.command(name="unlock", description="فتح الروم")
+async def unlock(interaction: discord.Interaction):
+    if not interaction.user.guild_permissions.manage_channels:
+        return await interaction.response.send_message("❌ لا تملك الصلاحية", ephemeral=True)
+
+    await interaction.channel.set_permissions(
+        interaction.guild.default_role,
+        send_messages=True
+    )
+
+    await interaction.response.send_message("🔓 تم فتح الروم")
+
+# /slowmode
+@bot.tree.command(name="slowmode", description="تفعيل السلو مود")
+async def slowmode(interaction: discord.Interaction, seconds: int):
+    if not interaction.user.guild_permissions.manage_channels:
+        return await interaction.response.send_message("❌ لا تملك الصلاحية", ephemeral=True)
+
+    await interaction.channel.edit(slowmode_delay=seconds)
+    await interaction.response.send_message(f"🐢 تم ضبط السلو مود على {seconds} ثانية")
+
+# /nick
+@bot.tree.command(name="nick", description="تغيير اسم عضو")
+async def nick(interaction: discord.Interaction, member: discord.Member, nickname: str):
+    if not interaction.user.guild_permissions.manage_nicknames:
+        return await interaction.response.send_message("❌ لا تملك الصلاحية", ephemeral=True)
+
+    await member.edit(nick=nickname)
+    await interaction.response.send_message(f"✏️ تم تغيير اسم {member.mention}")
+
+# /say
+@bot.tree.command(name="say", description="إرسال رسالة")
+async def say(interaction: discord.Interaction, message: str):
+    if not interaction.user.guild_permissions.administrator:
+        return await interaction.response.send_message("❌ لا تملك الصلاحية", ephemeral=True)
+
+    await interaction.channel.send(message)
+    await interaction.response.send_message("✅ تم الإرسال", ephemeral=True)
 
 
 @bot.tree.command(name="ping", description="سرعة البوت")
