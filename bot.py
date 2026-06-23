@@ -345,30 +345,61 @@ async def verify(interaction: discord.Interaction):
     )
 
 from discord.ext import tasks
+import aiohttp
 
 class LoLNews:
     def __init__(self, bot):
         self.bot = bot
-        self.channel_id = 1295599549808902155  # حط آيدي روم GAMING
+        self.channel_id = 1295599549808902155  # روم GAMING
+        self.last_title = None
         self.news_loop.start()
 
-    @tasks.loop(minutes=1)
+    @tasks.loop(minutes=30)
     async def news_loop(self):
-        print("LOL NEWS WORKING")
-
         channel = self.bot.get_channel(self.channel_id)
 
-        if channel is None:
+        if not channel:
             print("CHANNEL NOT FOUND")
             return
 
-        embed = discord.Embed(
-            title="🎮 League of Legends",
-            description="تم إرسال رسالة اختبار من نظام LoL News",
-            color=0x00BFFF
-        )
+        try:
+            async with aiohttp.ClientSession() as session:
+                async with session.get(
+                    "https://www.riotgames.com/api/news"
+                ) as response:
 
-        await channel.send(embed=embed)
-        print("NEWS SENT")
+                    data = await response.json()
+
+                    if not data.get("result"):
+                        return
+
+                    news = data["result"][0]
+
+                    title = news["title"]
+
+                    if title == self.last_title:
+                        return
+
+                    self.last_title = title
+
+                    embed = discord.Embed(
+                        title="🎮 League of Legends News",
+                        description=title,
+                        color=0x00BFFF
+                    )
+
+                    if news.get("bannerUrl"):
+                        embed.set_image(url=news["bannerUrl"])
+
+                    embed.add_field(
+                        name="الرابط",
+                        value=news["url"],
+                        inline=False
+                    )
+
+                    await channel.send(embed=embed)
+
+        except Exception as e:
+            print(f"LOL NEWS ERROR: {e}")
     
 bot.run(TOKEN)
