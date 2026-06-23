@@ -16,7 +16,7 @@ async def on_ready():
     print("ON_READY WORKING")
     synced = await bot.tree.sync()
     print(f"Synced {len(synced)} commands")
-    print(f"Logged in as {bot.user}"
+    print(f"Logged in as {bot.user}")
 
     #global lol_news_system
 
