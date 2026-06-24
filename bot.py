@@ -560,5 +560,62 @@ async def on_message(message):
     save_levels(data)
 
     await bot.process_commands(message)
+
+import discord
+from discord.ext import commands
+import time
+
+user_messages = {}
+
+@bot.event
+async def on_message(message):
+    if message.author.bot:
+        return
+
+    # منع everyone
+    if "@everyone" in message.content or "@here" in message.content:
+        await message.delete()
+        await message.channel.send(
+            f"{message.author.mention} ❌ ممنوع استخدام everyone",
+            delete_after=5
+        )
+        return
+
+    # منع روابط ديسكورد
+    if "discord.gg/" in message.content or "https://" in message.content:
+        await message.delete()
+        await message.channel.send(
+            f"{message.author.mention} ❌ الروابط ممنوعة",
+            delete_after=5
+        )
+        return
+
+    # منع السبام
+    user_id = message.author.id
+
+    if user_id not in user_messages:
+        user_messages[user_id] = []
+
+    user_messages[user_id].append(time.time())
+
+    user_messages[user_id] = [
+        t for t in user_messages[user_id]
+        if time.time() - t < 5
+    ]
+
+    if len(user_messages[user_id]) >= 5:
+        try:
+            await message.author.timeout(
+                discord.utils.utcnow() + discord.timedelta(minutes=5),
+                reason="Spam"
+            )
+
+            await message.channel.send(
+                f"🔇 {message.author.mention} تم إعطاؤه تايم أوت 5 دقائق بسبب السبام"
+            )
+        except:
+            pass
+
+    await bot.process_commands(message)
     
 bot.run(TOKEN)
