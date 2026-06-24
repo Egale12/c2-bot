@@ -373,12 +373,13 @@ async def c2help(interaction: discord.Interaction):
     embed = discord.Embed(
         title="📖 C2 Help Menu",
         description="By Eagle",
-        color=discord.Color.blue()
+        color=discord.Color.red()
     )
 
     embed.add_field(
         name="⚙️ C2 Menu",
         value="""
+        
 
 /clear
 /ping
@@ -389,7 +390,6 @@ async def c2help(interaction: discord.Interaction):
 /unlock
 /slowmode
 
--C2 SYSTEM 
 """,
         inline=False
     )
