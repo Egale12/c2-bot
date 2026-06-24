@@ -367,48 +367,29 @@ async def serverinfo(interaction: discord.Interaction):
     await interaction.response.send_message(embed=embed)
 
 
-@bot.tree.command(name="c2help", description="عرض أوامر البوت")
+@bot.tree.command(name="help", description="عرض أوامر البوت")
 async def c2help(interaction: discord.Interaction):
 
     embed = discord.Embed(
         title="📖 C2 Help Menu",
-        description="قائمة أوامر البوت",
+        description="By Eagle",
         color=discord.Color.blue()
     )
 
     embed.add_field(
-        name="⚙️ أوامر عامة",
+        name="⚙️ C2 Menu",
         value="""
-📁 إدارة
-/clear
-/kick
-/ban
-/unban
-/mute
-/unmute
-/warn
-/role
-/removerole
 
-📁 معلومات
+/clear
 /ping
 /avatar
 /userinfo
 /serverinfo
-
-📁 الرومات
 /lock
 /unlock
 /slowmode
 
-📁 أدوات
-/say
-/embed
-/nick
-
-📁 النظام
-/setverify
-/c2help
+-C2 SYSTEM 
 """,
         inline=False
     )
