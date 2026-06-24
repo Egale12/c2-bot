@@ -379,10 +379,35 @@ async def c2help(interaction: discord.Interaction):
     embed.add_field(
         name="⚙️ أوامر عامة",
         value="""
+📁 إدارة
+/clear
+/kick
+/ban
+/unban
+/mute
+/unmute
+/warn
+/role
+/removerole
+
+📁 معلومات
 /ping
 /avatar
 /userinfo
 /serverinfo
+
+📁 الرومات
+/lock
+/unlock
+/slowmode
+
+📁 أدوات
+/say
+/embed
+/nick
+
+📁 النظام
+/setverify
 /c2help
 """,
         inline=False
