@@ -2,6 +2,8 @@ import os
 import discord
 from discord.ext import commands
 import yt_dlp
+import json
+
 
 TOKEN = os.getenv("TOKEN")
 
@@ -197,6 +199,59 @@ async def clear(interaction: discord.Interaction, amount: int):
     await interaction.response.defer(ephemeral=True)
     await interaction.channel.purge(limit=amount)
     await interaction.followup.send(f"✅ تم حذف {amount} رسالة")
+
+@bot.tree.command(name="rank", description="عرض مستواك")
+async def rank(interaction: discord.Interaction):
+
+    data = load_levels()
+
+    user_id = str(interaction.user.id)
+
+    if user_id not in data:
+        return await interaction.response.send_message(
+            "❌ لا يوجد XP لديك"
+        )
+
+    embed = discord.Embed(
+        title="⭐️ Rank",
+        color=0xFFD700
+    )
+
+    embed.add_field(
+        name="Level",
+        value=data[user_id]["level"]
+    )
+
+    embed.add_field(
+        name="XP",
+        value=data[user_id]["xp"]
+    )
+
+    await interaction.response.send_message(embed=embed)
+
+@bot.tree.command(name="leaderboard", description="أفضل اللاعبين")
+async def leaderboard(interaction: discord.Interaction):
+
+    data = load_levels()
+
+    top = sorted(
+        data.items(),
+        key=lambda x: x[1]["level"],
+        reverse=True
+    )[:10]
+
+    text = ""
+
+    for i, (user_id, info) in enumerate(top, start=1):
+        text += f"{i}. <@{user_id}> | Level {info['level']}\n"
+
+    embed = discord.Embed(
+        title="🏆 Leaderboard",
+        description=text,
+        color=0xFFD700
+    )
+
+    await interaction.response.send_message(embed=embed)
 
 # /kick
 @bot.tree.command(name="kick", description="طرد عضو")
@@ -461,63 +516,49 @@ async def verify(interaction: discord.Interaction):
         view=VerifyView()
     )
 
-from discord.ext import tasks
-import aiohttp
+LEVEL_FILE = "levels.json"
 
-class LoLNews:
-    def __init__(self, bot):
-        print("LOLNEWS CREATED")
-        self.bot = bot
-        self.channel_id = 1295599549808902155
-        self.last_title = None
-        self.news_loop.start()
+def load_levels():
+    if not os.path.exists(LEVEL_FILE):
+        with open(LEVEL_FILE, "w") as f:
+            json.dump({}, f)
 
-    @tasks.loop(minutes=1)
-    async def news_loop(self):
-        channel = self.bot.get_channel(self.channel_id)
+    with open(LEVEL_FILE, "r") as f:
+        return json.load(f)
 
-        if not channel:
-            print("CHANNEL NOT FOUND")
-            return
+def save_levels(data):
+    with open(LEVEL_FILE, "w") as f:
+        json.dump(data, f, indent=4)
 
-        try:
-            async with aiohttp.ClientSession() as session:
-                async with session.get(
-                    "https://www.riotgames.com/api/news"
-                ) as response:
+@bot.event
+async def on_message(message):
+    if message.author.bot:
+        return
 
-                    data = await response.json()
+    data = load_levels()
 
-                    if not data.get("result"):
-                        return
+    user_id = str(message.author.id)
 
-                    news = data["result"][0]
+    if user_id not in data:
+        data[user_id] = {
+            "xp": 0,
+            "level": 1
+        }
 
-                    title = news["title"]
+    data[user_id]["xp"] += 5
 
-                    if title == self.last_title:
-                        return
+    needed = data[user_id]["level"] * 100
 
-                    self.last_title = title
+    if data[user_id]["xp"] >= needed:
+        data[user_id]["xp"] = 0
+        data[user_id]["level"] += 1
 
-                    embed = discord.Embed(
-                        title="🎮 League of Legends News",
-                        description=title,
-                        color=0x00BFFF
-                    )
+        await message.channel.send(
+            f"🎉 {message.author.mention} وصل للمستوى {data[user_id]['level']}!"
+        )
 
-                    if news.get("bannerUrl"):
-                        embed.set_image(url=news["bannerUrl"])
+    save_levels(data)
 
-                    embed.add_field(
-                        name="الرابط",
-                        value=news["url"],
-                        inline=False
-                    )
-
-                    await channel.send(embed=embed)
-
-        except Exception as e:
-            print(f"LOL NEWS ERROR: {e}")
+    await bot.process_commands(message)
     
 bot.run(TOKEN)
