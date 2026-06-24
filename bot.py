@@ -562,7 +562,6 @@ async def on_message(message):
     await bot.process_commands(message)
 
 import discord
-from discord.ext import commands
 import time
 
 user_messages = {}
@@ -581,14 +580,21 @@ async def on_message(message):
         )
         return
 
-    # منع روابط ديسكورد
-    if "discord.gg/" in message.content or "https://" in message.content:
-        await message.delete()
-        await message.channel.send(
-            f"{message.author.mention} ❌ الروابط ممنوعة",
-            delete_after=5
-        )
-        return
+    # الروابط المسموحة
+    allowed_domains = [
+        "youtube.com",
+        "youtu.be"
+    ]
+
+    # منع الروابط غير المسموحة
+    if "http" in message.content:
+        if not any(domain in message.content for domain in allowed_domains):
+            await message.delete()
+            await message.channel.send(
+                f"{message.author.mention} ❌ الروابط غير مسموحة",
+                delete_after=5
+            )
+            return
 
     # منع السبام
     user_id = message.author.id
@@ -611,7 +617,7 @@ async def on_message(message):
             )
 
             await message.channel.send(
-                f"🔇 {message.author.mention} تم إعطاؤه تايم أوت 5 دقائق بسبب السبام"
+                f"🔇 {message.author.mention} تم إعطاؤه تايم أوت بسبب السبام"
             )
         except:
             pass
