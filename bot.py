@@ -466,22 +466,28 @@ class VerifyView(discord.ui.View):
         super().__init__(timeout=None)
 
     @discord.ui.button(label="Verify", style=discord.ButtonStyle.success, emoji="✅")
-async def verify_button(self, interaction: discord.Interaction, button: discord.ui.Button):
+    async def verify_button(self, interaction: discord.Interaction, button: discord.ui.Button):
 
-    member_role = interaction.guild.get_role(1295597136947449999)      # Member
-    unverified_role = interaction.guild.get_role(1516197855381950609)  # Unverified
+        member_role = interaction.guild.get_role(1295597136947449999)
+        unverified_role = interaction.guild.get_role(1516197855381950609)
+
+        if unverified_role:
+            await interaction.user.remove_roles(unverified_role)
+
+        if member_role:
+            await interaction.user.add_roles(member_role)
+
+        await interaction.response.send_message(
+            "✅ تم التوثيق بنجاح.",
+            ephemeral=True
+        )
+
+@bot.event
+async def on_member_join(member):
+    unverified_role = member.guild.get_role(1516197855381950609)
 
     if unverified_role:
-        await interaction.user.remove_roles(unverified_role)
-
-    if member_role:
-        await interaction.user.add_roles(member_role)
-
-    await interaction.response.send_message(
-        "✅ تم التوثيق بنجاح، مرحباً بك!",
-        ephemeral=True
-    )
-            return
+        await member.add_roles(unverified_role)
 
 
 
