@@ -33,6 +33,14 @@ async def on_member_join(member):
             f"- {member.mention} .\n\n"
             f"- Members: {member.guild.member_count} ."
         )
+
+@bot.event
+async def on_member_join(member):
+    unverified_role = member.guild.get_role(1516197855381950609)  # Unverified
+
+    if unverified_role:
+        await member.add_roles(unverified_role)
+        
 #======[loge]=====#
 import discord
 from datetime import datetime
@@ -457,36 +465,24 @@ class VerifyView(discord.ui.View):
     def __init__(self):
         super().__init__(timeout=None)
 
-    @discord.ui.button(
-    label="Verify",
-    emoji="✅",
-    style=discord.ButtonStyle.success
-)
-    
-    async def verify_button(
-        self,
-        interaction: discord.Interaction,
-        button: discord.ui.Button
-    ):
-        member_role = interaction.guild.get_role(1295597136947449999)
-        unverified_role = interaction.guild.get_role(1516197855381950609)
+    @discord.ui.button(label="Verify", style=discord.ButtonStyle.success, emoji="✅")
+async def verify_button(self, interaction: discord.Interaction, button: discord.ui.Button):
 
-        if member_role in interaction.user.roles:
-            await interaction.response.send_message(
-                "✅ أنت موثق مسبقاً",
-                ephemeral=True
-            )
-            return
+    member_role = interaction.guild.get_role(1295597136947449999)      # Member
+    unverified_role = interaction.guild.get_role(1516197855381950609)  # Unverified
 
+    if unverified_role:
+        await interaction.user.remove_roles(unverified_role)
+
+    if member_role:
         await interaction.user.add_roles(member_role)
 
-        if unverified_role:
-            await interaction.user.remove_roles(unverified_role)
+    await interaction.response.send_message(
+        "✅ تم التوثيق بنجاح، مرحباً بك!",
+        ephemeral=True
+    )
+            return
 
-        await interaction.response.send_message(
-            "✅ تم توثيقك بنجاح",
-            ephemeral=True
-        )
 
 
 @bot.tree.command(
