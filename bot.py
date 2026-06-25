@@ -3,9 +3,13 @@ import discord
 from discord.ext import commands
 import yt_dlp
 import json
+import google.generativeai as genai
 
 
 TOKEN = os.getenv("TOKEN")
+
+genai.configure(api_key=os.getenv("GEMINI_API_KEY"))
+model = genai.GenerativeModel("gemini-2.5-flash")
 
 intents = discord.Intents.default()
 intents.message_content = True
@@ -354,6 +358,22 @@ async def nick(interaction: discord.Interaction, member: discord.Member, nicknam
 
     await member.edit(nick=nickname)
     await interaction.response.send_message(f"✏️ تم تغيير اسم {member.mention}")
+
+# /ai
+@bot.tree.command(name="ai", description="اسأل الذكاء الاصطناعي")
+async def ai(interaction: discord.Interaction, السؤال: str):
+
+    await interaction.response.defer()
+
+    try:
+        response = model.generate_content(السؤال)
+
+        await interaction.followup.send(
+            f"🤖 **السؤال:**\n{السؤال}\n\n{response.text}"
+        )
+
+    except Exception as e:
+        await interaction.followup.send(f"❌ حدث خطأ:\n{e}")
 
 # /say
 @bot.tree.command(name="say", description="إرسال رسالة")
