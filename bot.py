@@ -645,5 +645,21 @@ async def on_message(message):
             pass
 
     await bot.process_commands(message)
+
+AI_CHANNEL_ID = 1519869230982365297
+
+@bot.event
+async def on_message(message):
+    if message.author.bot:
+        return
+
+    if message.channel.id == AI_CHANNEL_ID:
+        try:
+            response = model.generate_content(message.content)
+            await message.reply(response.text)
+        except Exception as e:
+            await message.reply(f"❌ حدث خطأ: {e}")
+
+    await bot.process_commands(message)
     
 bot.run(TOKEN)
