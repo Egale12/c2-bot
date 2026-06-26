@@ -265,6 +265,93 @@ async def leaderboard(interaction: discord.Interaction):
 
     await interaction.response.send_message(embed=embed)
 
+LOG_CHANNEL_ID = 1322166719212683297
+
+def get_log_channel(guild):
+    return guild.get_channel(LOG_CHANNEL_ID)
+
+@bot.event
+async def on_member_join(member):
+    log = get_log_channel(member.guild)
+    if log:
+        embed = discord.Embed(
+            title="👋 عضو جديد",
+            description=f"{member.mention} انضم إلى السيرفر",
+            color=0x57F287
+        )
+        embed.add_field(name="العضو", value=f"{member} (`{member.id}`)", inline=False)
+        embed.set_thumbnail(url=member.display_avatar.url)
+        await log.send(embed=embed)
+
+@bot.event
+async def on_member_remove(member):
+    log = get_log_channel(member.guild)
+    if log:
+        embed = discord.Embed(
+            title="🚪 عضو غادر",
+            description=f"**{member}** غادر السيرفر",
+            color=0xED4245
+        )
+        await log.send(embed=embed)
+
+@bot.event
+async def on_message_delete(message):
+    if message.author.bot or not message.guild:
+        return
+
+    log = get_log_channel(message.guild)
+    if log:
+        embed = discord.Embed(
+            title="🗑️ حذف رسالة",
+            color=0xED4245
+        )
+        embed.add_field(name="العضو", value=message.author.mention, inline=False)
+        embed.add_field(name="الروم", value=message.channel.mention, inline=False)
+        embed.add_field(
+            name="محتوى الرسالة",
+            value=message.content if message.content else "*بدون نص*",
+            inline=False
+        )
+        await log.send(embed=embed)
+
+@bot.event
+async def on_message_edit(before, after):
+    if before.author.bot or before.content == after.content:
+        return
+
+    log = get_log_channel(before.guild)
+    if log:
+        embed = discord.Embed(
+            title="✏️ تعديل رسالة",
+            color=0xFEE75C
+        )
+        embed.add_field(name="العضو", value=before.author.mention, inline=False)
+        embed.add_field(name="قبل", value=before.content or "*فارغ*", inline=False)
+        embed.add_field(name="بعد", value=after.content or "*فارغ*", inline=False)
+        await log.send(embed=embed)
+
+@bot.event
+async def on_guild_channel_create(channel):
+    log = get_log_channel(channel.guild)
+    if log:
+        embed = discord.Embed(
+            title="📂 تم إنشاء روم",
+            description=f"{channel.mention}",
+            color=0x57F287
+        )
+        await log.send(embed=embed)
+
+@bot.event
+async def on_guild_channel_delete(channel):
+    log = get_log_channel(channel.guild)
+    if log:
+        embed = discord.Embed(
+            title="🗑️ تم حذف روم",
+            description=f"**{channel.name}**",
+            color=0xED4245
+        )
+        await log.send(embed=embed)
+
 # /kick
 @bot.tree.command(name="kick", description="طرد عضو")
 async def kick(interaction: discord.Interaction, member: discord.Member, reason: str = "No Reason"):
