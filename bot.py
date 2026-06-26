@@ -29,21 +29,32 @@ async def on_ready():
 
 @bot.event
 async def on_member_join(member):
-    channel = discord.utils.get(member.guild.text_channels, name="・𝐖𝐄𝐋𝐂𝐎𝐌𝐄")
 
+    # رسالة الترحيب
+    channel = discord.utils.get(member.guild.text_channels, name="WELCOME")
     if channel:
         await channel.send(
-            f"- Welcome to C2 .\n\n"
-            f"- {member.mention} .\n\n"
-            f"- Members: {member.guild.member_count} ."
+            f"👋 Welcome to C2\n"
+            f"{member.mention}\n"
+            f"Members: {member.guild.member_count}"
         )
 
-@bot.event
-async def on_member_join(member):
-    unverified_role = member.guild.get_role(1516197855381950609)  # Unverified
-
+    # رتبة Unverified
+    unverified_role = member.guild.get_role(1516197855381950609)
     if unverified_role:
         await member.add_roles(unverified_role)
+
+    # لوق الدخول
+    log = get_log_channel(member.guild)
+    if log:
+        embed = discord.Embed(
+            title="🟢 عضو جديد",
+            description=f"{member.mention} انضم إلى السيرفر",
+            color=0x57F287
+        )
+        embed.add_field(name="العضو", value=f"{member} ({member.id})")
+        embed.set_thumbnail(url=member.display_avatar.url)
+        await log.send(embed=embed)
         
 #======[loge]=====#
 import discord
@@ -270,18 +281,6 @@ LOG_CHANNEL_ID = 1322166719212683297
 def get_log_channel(guild):
     return guild.get_channel(LOG_CHANNEL_ID)
 
-@bot.event
-async def on_member_join(member):
-    log = get_log_channel(member.guild)
-    if log:
-        embed = discord.Embed(
-            title="👋 عضو جديد",
-            description=f"{member.mention} انضم إلى السيرفر",
-            color=0x57F287
-        )
-        embed.add_field(name="العضو", value=f"{member} (`{member.id}`)", inline=False)
-        embed.set_thumbnail(url=member.display_avatar.url)
-        await log.send(embed=embed)
 
 @bot.event
 async def on_member_remove(member):
@@ -589,12 +588,7 @@ class VerifyView(discord.ui.View):
             ephemeral=True
         )
 
-@bot.event
-async def on_member_join(member):
-    unverified_role = member.guild.get_role(1516197855381950609)
 
-    if unverified_role:
-        await member.add_roles(unverified_role)
 
 
 
