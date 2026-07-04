@@ -31,7 +31,7 @@ async def on_ready():
 async def on_member_join(member):
 
     # رسالة الترحيب
-    channel = discord.utils.get(member.guild.text_channels, name="WELCOME")
+    channel = discord.utils.get(member.guild.text_channels, name="・𝐖𝐄𝐋𝐂𝐎𝐌𝐄")
     if channel:
         await channel.send(
             f"👋 Welcome to C2\n"
